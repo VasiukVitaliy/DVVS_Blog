@@ -71,7 +71,7 @@ async function updateMessage(req, res){
 async function readAll(req, res){
     try{
         let result = await pool.query(
-            "SELECT m.id, m.message, m.created_at, u.uuid, u.nick, u.avatar FROM messages m JOIN users u ON m.user_id = u.uuid",
+            "SELECT m.id, m.message, m.created_at, u.uuid, u.nick, u.avatar FROM messages m JOIN users u ON m.user_id = u.uuid ORDER BY m.created_at ASC",
         )
         res.status(200).send(result.rows)
     }catch(err){
