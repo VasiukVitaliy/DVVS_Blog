@@ -20,7 +20,7 @@ function App() {
               <div className="min-h-[200px] w-full flex flex-col items-center justify-center p-6 border-1">
                 <header className="mb-10 text-center">
                   <h1 className="text-4xl font-bold text-gray-800 drop-shadow-md">
-                    Вітаємо на моєму блозі
+                    Вітаю на моєму блозі(Васюк Віталій ФЕІ-32)
                   </h1>
                 </header>
               </div>

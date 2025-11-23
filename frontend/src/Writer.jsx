@@ -53,7 +53,7 @@ export default function Writter() {
 
 
     return (
-        <div className="flex flex-row items-center space-x-2 p-4 fixed bottom-0 left-0 w-full shadow bg-cyan-400">
+        <div className="flex flex-row items-center space-x-2 p-4 fixed bottom-0 left-0 w-full shadow bg-indigo-300">
             <button
                 className="bg-red-500 text-white px-4 py-2 rounded"
                 onClick={()=>{localStorage.removeItem("token"); window.location.reload(true);}}

@@ -1,9 +1,11 @@
 import React from "react";
 import unknownIcon from './assets/unknown_icon.png';
 
-export default function Message({ nick, avatar, message, createdAt }) {
+export default function Message({ nick, avatar, message, createdAt , msgStyle, onClick}) {
+
   return (
-    <div className="flex items-start space-x-4 p-3 bg-rose-500 rounded-md shadow-md max-w-md">
+    <div onClick={onClick}
+    className={`flex space-x-4 p-3 bg-rose-500 rounded-md shadow-md max-w-md ${msgStyle}`}>
       <img
         src={avatar || unknownIcon}
         alt={`${nick} avatar`}
@@ -12,13 +14,14 @@ export default function Message({ nick, avatar, message, createdAt }) {
 
       <div className="flex-1">
         <div className="flex justify-between items-center mb-1">
-          <span className="font-semibold text-white">{nick}</span>
+          <span className="font-semibold text-white pr-3">{nick}</span>
           <span className="text-xs text-gray-200">
             {new Date(createdAt).toLocaleString()}
           </span>
         </div>
         <p className="text-white">{message}</p>
       </div>
+      
     </div>
   );
 }
