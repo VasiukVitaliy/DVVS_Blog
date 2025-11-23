@@ -22,16 +22,34 @@ export async function registration(req, res) {
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
     const ansDB = await pool.query(
-      "INSERT INTO users (nick, login, password, avatar) VALUES ($1, $2, $3, $4) RETURNING id, nick, login, avatar",
+      "INSERT INTO users (nick, login, password, avatar) VALUES ($1, $2, $3, $4) RETURNING uuid, nick, login, avatar, uuid",
       [nick, login, hashedPassword, avatarUrl]
     );
+
     const newUser = ansDB.rows[0];
-    return res.status(201).json({ user: newUser });
+
+
+    const token = jwt.sign(
+      { id: newUser.uuid, nick: newUser.nick },
+      JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    return res.status(201).json({
+      regStatus: newUser,
+      authenticate: true,
+      token,
+      nick: newUser.nick
+    });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({
+      error: err.message,
+      authenticate: false
+    });
   }
 }
+
 
 
 export async function login(req, res) {
@@ -39,7 +57,7 @@ export async function login(req, res) {
     const { login, password } = req.body;
 
     const ansDB = await pool.query(
-      "SELECT id, nick, password FROM users WHERE login = $1",
+      "SELECT uuid, nick, password FROM users WHERE 1=1 and login = $1",
       [login]
     );
 
@@ -55,7 +73,7 @@ export async function login(req, res) {
     }
 
     const token = jwt.sign(
-      { id: user.id, nick: user.nick, login: user.login },
+      { id: user.uuid, nick: user.nick },
       JWT_SECRET,
       { expiresIn: "1h" }
     );

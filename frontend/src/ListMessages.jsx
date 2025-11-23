@@ -5,10 +5,11 @@ import Message from "./Message";
 export default function ListMessages() {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const backend = import.meta.env.VITE_BACKEND;
 
   const fetchMessages = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/readAll"); 
+      const res = await axios.get(`${backend}/readAll`); 
       setMessages(res.data); 
       setLoading(false);
     } catch (err) {

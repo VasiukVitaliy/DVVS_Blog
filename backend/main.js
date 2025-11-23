@@ -24,7 +24,7 @@ app.put("/updateMessage", updateMessage)
 app.get("/readAll", readAll)
 
 app.post("/reg", upload.single("avatar"), registration)
-app.put("/login", login)
+app.post("/login", login)
 
 app.listen(PORT, HOST, () => {
   console.log(`Server running at http://${HOST}:${PORT}`);
