@@ -62,9 +62,10 @@ export default function Writter() {
                 Вийти
             </button>
             <input
-                className="flex-1 border p-2 rounded"
+                className="flex-1 border p-2 rounded focus:outline-none"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
+                onKeyDown={(e) => {if (e.key === "Enter") {sendMessage();}}}
                 placeholder="Повідомлення..."
             />
 
