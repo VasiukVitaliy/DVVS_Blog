@@ -45,6 +45,7 @@ export default function Writter() {
     });
 
     alert(res.data)
+    window.location.reload()
   } catch (err) {
     console.error(err);
     alert("Error connecting to server");
