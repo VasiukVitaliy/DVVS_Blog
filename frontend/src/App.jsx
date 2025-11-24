@@ -9,7 +9,6 @@ import "./App.css";
 import { useState } from "react";
 
 function App() {
-  const [auth, setAuth] = useState(!!localStorage.getItem("token"))
   return (
     <BrowserRouter>
       <Routes>

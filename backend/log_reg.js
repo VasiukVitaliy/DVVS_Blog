@@ -36,7 +36,6 @@ export async function registration(req, res) {
     );
 
     return res.status(201).json({
-      regStatus: newUser,
       authenticate: true,
       token,
       nick: newUser.nick

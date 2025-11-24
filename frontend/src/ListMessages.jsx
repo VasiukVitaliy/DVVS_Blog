@@ -35,7 +35,7 @@ export default function ListMessages() {
 
 
   return (
-    <div className="flex flex-col space-y-3 p-4">
+    <div className="flex flex-col space-y-3 p-4 pb-[100px]">
       {messages.length === 0 ? (
         <p className="text-center text-gray-500">Повідомлень немає</p>
       ) : (
@@ -47,8 +47,7 @@ export default function ListMessages() {
                 setSelectedMsg(msg);
                 setSelectedId(msg.id);
               }
-}}
-
+            }}
             msgStyle={!uuid || uuid !== msg.uuid ? "self-start" : "self-end"}
             nick={msg.nick}
             avatar={msg.avatar}
