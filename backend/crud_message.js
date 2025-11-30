@@ -1,15 +1,15 @@
 import pool from "./db.js"
 
 async function writeMessage(req, res) {
-    const { uuid, message } = req.body;
+    const { uuid, message, description } = req.body;
 
     if (!uuid) return res.status(401).send("Error: unauthorized user");
     if (!message) return res.status(403).send("Error: denied to send empty message");
 
     try {
         await pool.query(
-            "INSERT INTO public.messages (user_id, message) VALUES ($1, $2)",
-            [uuid, message]
+            "INSERT INTO public.messages (user_id, message, description) VALUES ($1, $2, $3)",
+            [uuid, message, description]
         );
         return res.status(201).send("Message successfully added");
     } catch (err) {
@@ -69,9 +69,10 @@ async function updateMessage(req, res){
 }
 
 async function readAll(req, res){
+
     try{
         let result = await pool.query(
-            "SELECT m.id, m.message, m.created_at, u.uuid, u.nick, u.avatar FROM messages m JOIN users u ON m.user_id = u.uuid ORDER BY m.created_at ASC",
+            "SELECT m.id, m.message, m.created_at, u.uuid, u.nick, u.avatar FROM messages m JOIN users u ON m.user_id = u.uuid ORDER BY m.created_at DESC"
         )
         res.status(200).send(result.rows)
     }catch(err){
@@ -80,5 +81,19 @@ async function readAll(req, res){
     }
 }
 
-export {writeMessage, deleteMessage, updateMessage, readAll};
+async function readInfoMessage(req, res){
+    const {id} = req.params
+    try{
+        let result = await pool.query(
+            "SELECT m.id, m.message, m.created_at, m.description, u.uuid, u.nick, u.avatar FROM messages m JOIN users u ON m.user_id = u.uuid WHERE m.id=$1",
+            [id]
+        )
+       res.status(200).send(result.rows)
+    }catch(err){
+        console.error(err);
+        return res.status(500).send("Database error");
+    }
+}
+
+export {writeMessage, deleteMessage, updateMessage, readAll, readInfoMessage};
 

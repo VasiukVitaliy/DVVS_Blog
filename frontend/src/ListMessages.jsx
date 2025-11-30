@@ -48,6 +48,7 @@ export default function ListMessages() {
                 setSelectedId(msg.id);
               }
             }}
+            id ={msg.id}
             msgStyle={!uuid || uuid !== msg.uuid ? "self-start" : "self-end"}
             nick={msg.nick}
             avatar={msg.avatar}

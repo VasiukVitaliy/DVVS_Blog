@@ -5,6 +5,8 @@ import axios from "axios";
 
 export default function Writter() {
     const [message, setMessage] = useState("");
+    const [description, setDescription] = useState("");
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate()
     const backend = import.meta.env.VITE_BACKEND;
 
@@ -25,30 +27,37 @@ export default function Writter() {
     }
 
     const sendMessage = async () => {
-  const token = localStorage.getItem("token");
+    setLoading(true);
+    const token = localStorage.getItem("token");
 
-  if (!token) {
-    alert("User not authorized");
-    return; 
-  }
+    if (!token) {
+        alert("User not authorized");
+        return; 
+    }
 
-  const tokenData = parseToken(token);
-  if (!tokenData) {
-    alert("Invalid token");
-    return;
-  }
+    const tokenData = parseToken(token);
+    if (!tokenData) {
+        alert("Invalid token");
+        return;
+    }
+    if (message.trim() === "") {
+        alert("Назва тема не повинна бути порожньою");
+        setLoading(false);
+        return;
+    }
 
   try {
     const res = await axios.post(`${backend}/writeMessage`, {
       uuid: tokenData.id, 
-      message: message
+      message: message,
+      description: description
     });
-
-    alert(res.data)
     window.location.reload()
+    setLoading(false);
   } catch (err) {
     console.error(err);
     alert("Error connecting to server");
+    setLoading(false);
   }
 };
 
@@ -61,17 +70,27 @@ export default function Writter() {
             >
                 Вийти
             </button>
-            <input
-                className="flex-1 border p-2 rounded focus:outline-none"
+            <textarea
+                className="border p-2 rounded focus:outline-none"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyDown={(e) => {if (e.key === "Enter") {sendMessage();}}}
-                placeholder="Повідомлення..."
+                placeholder="Тема..."
+                
+            />
+            <textarea
+                className="flex-1 border p-2 rounded focus:outline-none"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                onKeyDown={(e) => {if (e.key === "Enter") {sendMessage();}}}
+                placeholder="Опис..."
+                
             />
 
             <button
                 className="bg-green-600 text-white px-4 py-2 rounded"
                 onClick={sendMessage}
+                disabled={loading}
             >
                 Відправити
             </button>

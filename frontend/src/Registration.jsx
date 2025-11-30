@@ -6,11 +6,15 @@ export default function RegisterForm() {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [avatar, setAvatar] = useState(null);
+  const [loading, setLoading] = useState(false);
+  
+  const navigate = useNavigate();
 
   const backend = import.meta.env.VITE_BACKEND;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     if (!nick || !login || !password) {
       alert("Заповніть всі поля");
@@ -36,12 +40,17 @@ try {
     setPassword("");
     setAvatar(null);
     localStorage.setItem("token", res.data.token)
+    setLoading(false)
+    navigate("/");
   } else {
     alert("Помилка: " + res.data.message);
   }
+;
+  
   } catch (err) {
     console.error(err);
     alert("Помилка при відправці: " + (err.response?.data?.message || err.message));
+    setLoading(false);
   }
 }
   
@@ -99,6 +108,7 @@ try {
       <button
         type="submit"
         className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+        disabled={loading}
       >
         Зареєструватися
       </button>

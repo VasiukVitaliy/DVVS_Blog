@@ -1,5 +1,5 @@
 import express, { urlencoded } from "express";
-import { writeMessage,  deleteMessage, updateMessage, readAll} from "./crud_message.js";
+import { writeMessage,  deleteMessage, updateMessage, readAll, readInfoMessage} from "./crud_message.js";
 import { login, registration } from "./log_reg.js";
 import multer from "multer";
 import dotenv from "dotenv";
@@ -22,6 +22,7 @@ app.post("/writeMessage", writeMessage)
 app.delete("/deleteMessage", deleteMessage)
 app.put("/updateMessage", updateMessage)
 app.get("/readAll", readAll)
+app.get("/readDescMessage/:id", readInfoMessage)
 
 app.post("/reg", upload.single("avatar"), registration)
 app.post("/login", login)

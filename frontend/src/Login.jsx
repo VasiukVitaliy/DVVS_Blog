@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function LoginForm() {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const backend = import.meta.env.VITE_BACKEND;
 
@@ -17,6 +18,7 @@ const handleSubmit = async (e) => {
   }
 
   try {
+    setLoading(true);
     const res = await axios.post(`${backend}/login`, { login, password });
 
     const data = res.data;
@@ -27,9 +29,11 @@ const handleSubmit = async (e) => {
     } else {
       alert(data.message || "Помилка логіну");
     }
+    setLoading(false)
   } catch (err) {
     console.error(err);
     alert("Помилка при підключенні до сервера");
+    setLoading(false)
   }
 };
 
@@ -66,6 +70,7 @@ const handleSubmit = async (e) => {
       <button
         type="submit"
         className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
+        disabled={loading}
       >
         Увійти
       </button>
