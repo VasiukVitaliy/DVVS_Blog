@@ -28,7 +28,6 @@ export async function registration(req, res) {
 
     const newUser = ansDB.rows[0];
 
-
     const token = jwt.sign(
       { id: newUser.uuid, nick: newUser.nick },
       JWT_SECRET,

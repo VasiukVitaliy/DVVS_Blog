@@ -23,12 +23,12 @@ async function deleteMessage(req, res){
     if(!message_id) res.status(400).send("Error: message doesn't exist")
     try{
         let result = await pool.query(
-            "SELECT id from messages WHERE 1=1 and id=$1 and user_id=$2",
+            "SELECT id from messages WHERE and id=$1 and user_id=$2",
             [message_id, uuid]
         )
         if (result.rowCount > 0){
             await pool.query(
-            "DELETE FROM public.messages WHERE 1=1 and id = $1",
+            "DELETE FROM public.messages WHERE and id = $1",
             [message_id]
             )
             return res.status(200).send("Message successfully deleted");
@@ -48,19 +48,17 @@ async function updateMessage(req, res){
     if(!message_id) res.status(400).send("Error: message doesn't exist")
     try{
         let result = await pool.query(
-            "SELECT id from messages WHERE 1=1 and id=$1 and user_id=$2",
+            "SELECT id from messages WHERE and id=$1 and user_id=$2",
             [message_id, uuid]
         )
         if (result.rowCount > 0){
             await pool.query(
-            "UPDATE messages SET message = $1 WHERE 1=1 and id = $2 AND user_id = $3",
+            "UPDATE messages SET message = $1 WHERE and id = $2 AND user_id = $3",
             [message, message_id, uuid]
             )
             return res.status(200).send("Message successfully updated");
         }
-        else return res.status(400).send("Bad Request: message missing");
-        
-        
+        else return res.status(400).send("Bad Request: message missing");  
     }
     catch (err) {
         console.error(err);
