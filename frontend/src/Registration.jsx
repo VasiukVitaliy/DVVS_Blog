@@ -1,5 +1,7 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState} from "react";
+
+import { useNavigate } from "react-router-dom";
 
 export default function RegisterForm() {
   const [nick, setNick] = useState("");
